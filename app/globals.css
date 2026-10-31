@@ -9,7 +9,7 @@
 html, body { background: var(--paper); color: var(--ink); font-family: var(--sans); }
 body { overflow-x: hidden; }
 .gl { position: fixed; inset: 0; width: 100vw; height: 100vh; display: block; }
-.track { height: 4300vh; }
+.track { height: 5020vh; }
 
 .paper {
   position: fixed; inset: 0; pointer-events: none;
