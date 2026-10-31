@@ -15,9 +15,10 @@ const CAPTIONS = [
   { in: 2.96, out: 3.06, title: 'Floor 1.', body: 'Seven apartments around the light well. First, studio 1.02 on the avenue.' },
   { in: 3.42, out: 3.64, num: '05', title: 'Studio 1.02', body: 'Bed by the French window, a full kitchen, a table for two, bathroom by the entry. 32.6 m².' },
   { in: 3.79, out: 3.92, title: 'Up one floor.', body: 'The stair turns beside the light well.' },
-  { in: 4.10, out: 4.28, num: '06', title: 'Residence 2.01', body: 'The three west studios of floor 2 combined: 97 m², living, dining and kitchen in one 63 m² room.' },
-  { in: 4.35, out: 4.49, title: 'West light.', body: 'The French windows open over the avenue at sunset.' },
-  { in: 4.70, out: 5.03, num: '07', title: 'Roof terrace', body: 'Oak deck, hot tub, lounge around the fire, an outdoor kitchen, and the hills at sunset.' },
+  { in: 4.11, out: 4.21, title: 'Floor 2.', body: 'The three west studios combined into one residence; four more apartments around the light well.' },
+  { in: 4.62, out: 4.80, num: '06', title: 'Residence 2.01', body: 'The three west studios of floor 2 combined: 97 m², living, dining and kitchen in one 63 m² room.' },
+  { in: 4.87, out: 5.01, title: 'West light.', body: 'The French windows open over the avenue at sunset.' },
+  { in: 5.22, out: 5.55, num: '07', title: 'Roof terrace', body: 'Oak deck, hot tub, lounge around the fire, an outdoor kitchen, and the hills at sunset.' },
 ];
 
 export default function Walkthrough() {
@@ -25,6 +26,7 @@ export default function Walkthrough() {
   const paper = useRef(null);
   const titleblock = useRef(null);
   const titleblock2 = useRef(null);
+  const titleblock3 = useRef(null);
   const railfill = useRef(null);
   const track = useRef(null);
   const captions = useRef([]);
@@ -50,6 +52,7 @@ export default function Walkthrough() {
           paper: paper.current,
           titleblock: titleblock.current,
           titleblock2: titleblock2.current,
+          titleblock3: titleblock3.current,
           railfill: railfill.current,
           track: track.current,
           captions: captions.current.filter(Boolean),
@@ -96,6 +99,18 @@ export default function Walkthrough() {
           <div><span>Sheet</span>A-102</div>
         </div>
         <div className="tb-row tb-foot">Level +3.60</div>
+      </aside>
+
+      <aside ref={titleblock3} className="titleblock" style={{ opacity: 0 }}>
+        <div className="tb-row tb-big">CORNER BUILDING</div>
+        <div className="tb-row">Apartment 2.01 · residence</div>
+        <div className="tb-grid">
+          <div><span>Drawing</span>Floor 2 plan</div>
+          <div><span>Cut</span>+1.20 m</div>
+          <div><span>Scale</span>1:100</div>
+          <div><span>Sheet</span>A-103</div>
+        </div>
+        <div className="tb-row tb-foot">Level +6.70</div>
       </aside>
 
       <div className="captions">
