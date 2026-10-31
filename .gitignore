@@ -1,0 +1,7 @@
+node_modules
+.next
+out
+AGENTS.md
+*.mp4
+checkpoint-*.png
+.DS_Store
