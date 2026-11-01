@@ -18,7 +18,9 @@ const CAPTIONS = [
   { in: 4.11, out: 4.21, title: 'Floor 2.', body: 'The three west studios combined into one residence; four more apartments around the light well.' },
   { in: 4.62, out: 4.80, num: '06', title: 'Residence 2.01', body: 'The three west studios of floor 2 combined: 97 m², living, dining and kitchen in one 63 m² room.' },
   { in: 4.87, out: 5.01, title: 'West light.', body: 'The French windows open over the avenue at sunset.' },
-  { in: 5.22, out: 5.55, num: '07', title: 'Roof terrace', body: 'Oak deck, hot tub, lounge around the fire, an outdoor kitchen, and the hills at sunset.' },
+  { in: 5.22, out: 5.40, num: '07', title: 'Roof terrace', body: 'Two oak decks either side of the stair and tank volumes, open to the sky.' },
+  { in: 5.50, out: 5.68, title: 'The east deck.', body: 'Dinner for six under the pergola, string lights and an olive in the corner.' },
+  { in: 5.88, out: 6.08, title: 'The west deck.', body: 'Hot tub, loungers, a lounge round the fire and an outdoor kitchen, facing the hills at sunset.' },
 ];
 
 export default function Walkthrough() {
