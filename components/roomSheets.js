@@ -1,0 +1,68 @@
+// The room sheets opened from the info points. Figures follow the model (plan × 1.3) and the
+// captions; finishes are the materials in the scene. Placeholder copy until the final details.
+export const SHEETS = {
+  cafe: {
+    kicker: 'Ground floor · Shop 01', title: 'Café',
+    lede: 'A corner unit glazed on two streets, with a fluted oak counter running its length and a window bar on North Street. West sun reaches the terrace in the afternoon.',
+    plan: { w: 8.3, d: 3.4, doors: [['w', 0.62]], windows: [['n', 0.06, 0.6], ['w', 0.08, 0.38]] },
+    figures: [['Area', '28.2 m²'], ['Dimensions', '8.30 × 3.40 m'], ['Ceiling', '3.30 m'], ['Frontage', 'Two streets'], ['Terrace', 'On the corner'], ['Use', 'Food and drink']],
+    finishes: [['Terrazzo floor', '#d9d1c4'], ['Fluted oak', '#a7825a'], ['Green zellige', '#2f5a4a'], ['Carrara marble', '#ece8e2'], ['Brass', '#b8925a']],
+    features: ['Glazed on North Street and the avenue', 'Window bar with stools on North Street', 'Back bar in green zellige with open shelving', 'Globe pendants over the counter', 'Corner terrace for six tables'],
+  },
+  clothing: {
+    kicker: 'Ground floor · Shop 02', title: 'Clothing store',
+    lede: 'A calm room on the avenue: oak shelving along one wall, a brass rail dropped from the ceiling, a travertine plinth in the middle and a fitting room behind linen.',
+    plan: { w: 8.3, d: 3.7, doors: [['w', 0.3]], windows: [['w', 0.45, 0.83]] },
+    figures: [['Area', '30.8 m²'], ['Dimensions', '8.30 × 3.70 m'], ['Ceiling', '3.30 m'], ['Frontage', 'The avenue'], ['Fitting room', 'Yes'], ['WC', 'Yes']],
+    finishes: [['Oak floor', '#9c7a55'], ['Oak shelving', '#b08d63'], ['Travertine', '#d8ccb6'], ['Linen', '#ddd5c7'], ['Brass', '#b8925a']],
+    features: ['Full-height display window on the avenue', 'Brass hanging rail on ceiling drops', 'Oak cube shelving, 12 bays', 'Fitting room behind a linen curtain', 'Travertine cash desk'],
+  },
+  books: {
+    kicker: 'Ground floor · Shop 03', title: 'Bookshop',
+    lede: 'Shelves on two walls, a long walnut table of new titles under two globe pendants, and a reading chair by the window onto the avenue.',
+    plan: { w: 8.3, d: 3.5, doors: [['w', 0.25]], windows: [['w', 0.45, 0.85]] },
+    figures: [['Area', '29.2 m²'], ['Dimensions', '8.30 × 3.50 m'], ['Ceiling', '3.30 m'], ['Frontage', 'The avenue'], ['Shelving', 'Two walls'], ['Use', 'Retail']],
+    finishes: [['Oak floor', '#9c7a55'], ['Oak shelves', '#b08d63'], ['Walnut', '#5e4330'], ['Wool rug', '#cfc6b7'], ['Cognac leather', '#6e4127']],
+    features: ['Floor-to-ceiling oak shelving on two walls', 'Long walnut table for new titles', 'Reading chair by the window', 'Cash desk against the back wall', 'Gold-leaf lettering on the glass'],
+  },
+  lobby: {
+    kicker: 'Ground floor · Common areas', title: 'Lobby',
+    lede: 'Travertine underfoot, lime plaster and oak slats, and a patio open to the sky with an olive tree at its centre. The stair turns beside the light well.',
+    plan: { w: 1.9, d: 9.0, doors: [['n', 0.5]], windows: [] },
+    figures: [['Ceiling', '3.30 m'], ['Entrance', 'North Street'], ['Patio', 'Open to the sky'], ['Stair', 'Dog-leg, travertine'], ['Letterboxes', 'Bronze'], ['Access', 'Garage, caretaker, admin']],
+    finishes: [['Travertine', '#d8ccb6'], ['Lime plaster', '#e2dbd0'], ['Oak slats', '#a7825a'], ['Bronze', '#5a4632'], ['Gravel', '#bdb3a3']],
+    features: ['Patio with an olive tree, open to the sky', 'Late sun falls down the light well', 'Bronze letterboxes and a travertine bench', 'Corridor to the garage and the admin office', 'Caretaker’s flat on the ground floor'],
+  },
+  garage: {
+    kicker: 'Ground floor · Parking', title: 'Parking',
+    lede: 'Six covered spaces under the upper floors, two in tandem per bay, behind a sliding gate on North Street, reached from the hall as well as the street.',
+    plan: { w: 7.8, d: 11.7, doors: [['w', 0.78]], windows: [] },
+    figures: [['Spaces', '6'], ['Layout', '3 bays, tandem'], ['Clear height', '3.30 m'], ['Gate', 'Sliding, North Street'], ['Access', 'From the hall'], ['Lighting', 'Linear LED']],
+    finishes: [['Concrete', '#8c8984'], ['Line paint', '#e9e4da'], ['Black steel', '#1c1c1c'], ['Walnut door', '#5e4330']],
+    features: ['Covered by the upper floors', 'Sliding gate on North Street', 'Direct access from the hall corridor', 'Painted bays with wheel stops', 'Linear lights over every bay'],
+  },
+  studio: {
+    kicker: 'Floor 1 · Apartment 1.02', title: 'Studio 1.02',
+    lede: 'A studio on the avenue: the bed by the French window, a full kitchen, a table for two and a bathroom by the entry, finished in oak and walnut.',
+    plan: { w: 8.7, d: 3.7, doors: [['e', 0.55]], windows: [['w', 0.0, 0.5]] },
+    figures: [['Area', '32.6 m²'], ['Dimensions', '8.70 × 3.70 m'], ['Ceiling', '2.80 m'], ['Bathrooms', '1'], ['Outlook', 'West, the avenue'], ['Level', '+3.60']],
+    finishes: [['Oak floor', '#9c7a55'], ['Fluted walnut', '#5e4330'], ['Marble', '#ece8e2'], ['Bouclé', '#e3ddd2'], ['Brass', '#b8925a']],
+    features: ['French window with a Juliet balcony', 'Fluted walnut wall behind the bed', 'Full kitchen with a marble counter', 'Alabaster pendant over the table', 'Bathroom by the entry'],
+  },
+  resi: {
+    kicker: 'Floor 2 · Apartment 2.01', title: 'Residence 2.01',
+    lede: 'The three west studios of floor 2 combined: one 63 m² room for living, dining and cooking along three French windows, and a bedroom with a fluted walnut wall.',
+    plan: { w: 8.7, d: 11.3, doors: [['e', 0.88]], windows: [['w', 0.15, 0.32], ['w', 0.34, 0.51], ['w', 0.67, 0.83]] },
+    figures: [['Area', '97 m²'], ['Living', '63 m², one room'], ['Bedrooms', '1'], ['Bathrooms', '1'], ['Ceiling', '2.80 m'], ['Outlook', 'West, three French windows']],
+    finishes: [['Oak floor', '#9c7a55'], ['Walnut', '#5e4330'], ['Bouclé', '#e3ddd2'], ['Marble', '#ece8e2'], ['Travertine', '#d8ccb6']],
+    features: ['Three French windows over the avenue', 'Kitchen island with two opal pendants', 'Walnut dining table for eight', 'Bouclé sofa facing the window', 'Bedroom with TV wall opposite the bed'],
+  },
+  roof: {
+    kicker: 'Roof · Shared terrace', title: 'Roof terrace',
+    lede: 'Two oak decks either side of the stair and tank volumes: the west deck faces the hills at sunset, the east deck holds a long table under a steel pergola.',
+    plan: { w: 26.5, d: 11.7, doors: [], windows: [] },
+    figures: [['Decks', 'Two'], ['West deck', 'Hot tub, lounge, kitchen'], ['East deck', 'Dining for six'], ['Planting', 'Olives, beds on the parapet'], ['Light well', 'Glass guard'], ['Level', '+9.80']],
+    finishes: [['Oak deck', '#a7825a'], ['Stone pavers', '#ddd5c8'], ['Cedar', '#7a4a2e'], ['Black steel', '#1c1c1c'], ['Linen', '#ddd5c7']],
+    features: ['Cedar hot tub for four', 'Lounge round a fire bowl', 'Outdoor kitchen with a marble counter', 'Dining under the pergola, string lights above', 'Views west to the hills'],
+  },
+};

@@ -39,7 +39,7 @@ export default function Loader({ progress, ready, onDone }) {
   return (
     <div className={`loader${leaving ? ' done' : ''}`} role="status" aria-label={`Loading ${pct}%`}>
       <div className="ld-mast">
-        <span className="ld-mark">STUDIO&nbsp;NAME</span>
+        <span className="ld-mark">ASPA&nbsp;DESIGN</span>
         <span className="ld-meta">Corner Building · Mixed use</span>
       </div>
 

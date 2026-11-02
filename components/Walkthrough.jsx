@@ -2,26 +2,28 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 import Loader from './Loader';
+import RoomSheet from './RoomSheet';
+import Enquiry from './Enquiry';
 
 const CAPTIONS = [
   { in: 0.08, out: 0.46, title: 'The drawing is the building.', body: 'One model, cut at 1.20 m and seen from 900 m away through a very long lens.' },
   { in: 0.60, out: 0.78, title: '20.40 × 9.00 m', body: 'on a corner lot. Shops at street level, two floors of apartments, a terrace on the roof.' },
   { in: 0.82, out: 0.92, title: 'Arrival.', body: 'North Street entrance, late afternoon.' },
-  { in: 1.08, out: 1.23, num: '01', title: 'Lobby', body: 'Travertine, lime plaster, oak slats, and a patio open to the sky. 3.30 m ceiling.' },
-  { in: 1.36, out: 1.52, title: 'Parking.', body: 'Six covered spaces under the upper floors, two in tandem per bay, behind a sliding gate on North Street.' },
+  { in: 1.08, out: 1.23, num: '01', sheet: 'lobby', title: 'Lobby', body: 'Travertine, lime plaster, oak slats, and a patio open to the sky. 3.30 m ceiling.' },
+  { in: 1.36, out: 1.52, sheet: 'garage', title: 'Parking.', body: 'Six covered spaces under the upper floors, two in tandem per bay, behind a sliding gate on North Street.' },
   { in: 1.79, out: 1.87, title: 'The corner.', body: 'West sun on the café terrace. Three shopfronts on the avenue.' },
-  { in: 1.97, out: 2.14, num: '02', title: 'Café', body: 'Fluted oak counter, green zellige, terrazzo floor, a window bar on North Street. 28.2 m².' },
-  { in: 2.29, out: 2.59, num: '03', title: 'Clothing store', body: 'Oak shelving, a travertine plinth, a fitting room behind linen. 30.8 m².' },
-  { in: 2.74, out: 2.93, num: '04', title: 'Bookshop', body: 'Oak shelves on two walls, a long table of new titles, a reading chair by the window. 29.2 m².' },
+  { in: 1.97, out: 2.14, num: '02', sheet: 'cafe', title: 'Café', body: 'Fluted oak counter, green zellige, terrazzo floor, a window bar on North Street. 28.2 m².' },
+  { in: 2.29, out: 2.59, num: '03', sheet: 'clothing', title: 'Clothing store', body: 'Oak shelving, a travertine plinth, a fitting room behind linen. 30.8 m².' },
+  { in: 2.74, out: 2.93, num: '04', sheet: 'books', title: 'Bookshop', body: 'Oak shelves on two walls, a long table of new titles, a reading chair by the window. 29.2 m².' },
   { in: 3.16, out: 3.46, title: 'Floor 1.', body: 'Seven apartments around the light well. First, studio 1.02 on the avenue.' },
-  { in: 3.82, out: 4.04, num: '05', title: 'Studio 1.02', body: 'Bed by the French window, a full kitchen, a table for two, bathroom by the entry. 32.6 m².' },
+  { in: 3.82, out: 4.04, num: '05', sheet: 'studio', title: 'Studio 1.02', body: 'Bed by the French window, a full kitchen, a table for two, bathroom by the entry. 32.6 m².' },
   { in: 4.19, out: 4.32, title: 'Up one floor.', body: 'The stair turns beside the light well.' },
   { in: 4.49, out: 4.79, title: 'Floor 2.', body: 'The three west studios combined into one residence; four more apartments around the light well.' },
-  { in: 5.22, out: 5.40, num: '06', title: 'Residence 2.01', body: 'The three west studios of floor 2 combined: 97 m², living, dining and kitchen in one 63 m² room.' },
+  { in: 5.22, out: 5.40, num: '06', sheet: 'resi', title: 'Residence 2.01', body: 'The three west studios of floor 2 combined: 97 m², living, dining and kitchen in one 63 m² room.' },
   { in: 5.47, out: 5.61, title: 'West light.', body: 'The French windows open over the avenue at sunset.' },
-  { in: 5.82, out: 6.00, num: '07', title: 'Roof terrace', body: 'Two oak decks either side of the stair and tank volumes, open to the sky.' },
-  { in: 6.10, out: 6.28, title: 'The east deck.', body: 'Dinner for six under the pergola, string lights and an olive in the corner.' },
-  { in: 6.48, out: 6.66, title: 'The west deck.', body: 'Hot tub, loungers, a lounge round the fire and an outdoor kitchen, facing the hills at sunset.' },
+  { in: 5.82, out: 6.00, num: '07', sheet: 'roof', title: 'Roof terrace', body: 'Two oak decks either side of the stair and tank volumes, open to the sky.' },
+  { in: 6.10, out: 6.28, sheet: 'roof', title: 'The east deck.', body: 'Dinner for six under the pergola, string lights and an olive in the corner.' },
+  { in: 6.48, out: 6.66, sheet: 'roof', title: 'The west deck.', body: 'Hot tub, loungers, a lounge round the fire and an outdoor kitchen, facing the hills at sunset.' },
 ];
 
 // chapter index (raw story positions, the same clock as the captions)
@@ -43,11 +45,30 @@ export default function Walkthrough() {
   const captions = useRef([]);
   const chapters = useRef([]);
   const cta = useRef(null);
+  const intro = useRef(null);
   const rail = useRef(null);
   const expRef = useRef(null);
   // chapter jumps: a near one glides there on the scroll; a far one (where gliding would race through
   // half the building) fades to paper with the chapter's name, cuts, and opens on the new view
-  const [jump, setJump] = useState(null);   // { n, label, phase: 'in' | 'out' }
+  const [jump, setJump] = useState(null);
+  // room sheet opened from an info point
+  const [sheet, setSheet] = useState(null);
+  useEffect(() => {
+    const open = (e) => { setSheet(e.detail); expRef.current?.hold(true); };
+    window.addEventListener('cb:sheet', open);
+    return () => window.removeEventListener('cb:sheet', open);
+  }, []);
+  const closeSheet = useCallback(() => { setSheet(null); expRef.current?.hold(false); }, []);
+  // enquiry form, over everything (it can open from a room sheet)
+  const [enquiry, setEnquiry] = useState(null);   // null = closed, string = the space asked about
+  useEffect(() => {
+    const open = (e) => { setEnquiry(e.detail ?? ''); expRef.current?.hold(true); };
+    window.addEventListener('cb:enquire', open);
+    return () => window.removeEventListener('cb:enquire', open);
+  }, []);
+  const closeEnquiry = useCallback(() => { setEnquiry(null); if (!sheetRef.current) expRef.current?.hold(false); }, []);
+  const sheetRef = useRef(null);
+  sheetRef.current = sheet;   // { n, label, phase: 'in' | 'out' }
   const jumping = useRef(false);
   const go = (u, i) => {
     const exp = expRef.current;
@@ -96,6 +117,7 @@ export default function Walkthrough() {
           captions: captions.current.filter(Boolean),
           chapters: chapters.current.filter(Boolean),
           cta: cta.current,
+          intro: intro.current,
           rail: rail.current,
         },
         onProgress: setProgress,
@@ -116,8 +138,16 @@ export default function Walkthrough() {
       <div ref={paper} className="paper" />
       <div ref={post} className="post" style={{ opacity: 0 }} />
 
+      <section ref={intro} className={`intro${loaderGone || record ? ' on' : ''}`} aria-label="Corner Building">
+        <p className="in-k">Corner Building · Mixed use</p>
+        <h1 className="in-h"><span><i>A corner,</i></span><span><i><em>drawn</em> and built.</i></span></h1>
+        <p className="in-s">Three shops, fourteen apartments and a roof terrace — from the plan sheet to the last light on the roof.</p>
+        <div className="in-hint"><span>Scroll to enter</span><i /></div>
+      </section>
+
+      <i className="gem" aria-hidden="true" />
       <header className="mast">
-        <span className="mark">STUDIO&nbsp;NAME</span>
+        <span className="mark">ASPA&nbsp;DESIGN</span>
         <span className="meta">Corner Building · Mixed use</span>
       </header>
 
@@ -162,6 +192,11 @@ export default function Walkthrough() {
           <p key={i} ref={(el) => { captions.current[i] = el; }} className="cap" data-in={c.in} data-out={c.out}>
             <span className="cap-h">{c.num && <span className="num">{c.num}</span>}<b>{c.title.replace(/\.$/, '')}</b></span>
             <span className="cap-b">{c.body}</span>
+            {c.sheet && (
+              <button className="cap-more" onClick={() => window.dispatchEvent(new CustomEvent('cb:sheet', { detail: c.sheet }))}>
+                More about this space <span aria-hidden="true">→</span>
+              </button>
+            )}
           </p>
         ))}
       </div>
@@ -183,11 +218,13 @@ export default function Walkthrough() {
         <p className="cta-k">Corner Building · Mixed use</p>
         <h2 className="cta-t">Three shops, fourteen apartments and a roof terrace on a corner lot.</h2>
         <div className="cta-a">
-          <a className="cta-b primary" href="mailto:hello@example.com?subject=Corner%20Building">Enquire about availability</a>
+          <button className="cta-b primary" onClick={() => window.dispatchEvent(new CustomEvent('cb:enquire', { detail: '' }))}>Enquire about availability</button>
           <a className="cta-b" href="#plans" onClick={(e) => { e.preventDefault(); go(3.25, -1); }}>View the plans</a>
           <button className="cta-b ghost" onClick={() => go(0, 0)}>Replay the walk</button>
         </div>
       </section>
+      <RoomSheet id={sheet} onClose={closeSheet} />
+      <Enquiry open={enquiry !== null} space={enquiry} onClose={closeEnquiry} />
       {jump && (
         <div className={`jump ${jump.phase}`} aria-hidden="true">
           <div className="jump-c">
