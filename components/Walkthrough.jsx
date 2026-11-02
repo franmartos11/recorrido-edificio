@@ -1,26 +1,27 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import Loader from './Loader';
 
 const CAPTIONS = [
-  { in: 0.10, out: 0.27, title: 'The drawing is the building.', body: 'One model, cut at 1.20 m and seen from 900 m away through a very long lens.' },
-  { in: 0.40, out: 0.58, title: '20.40 × 9.00 m', body: 'on a corner lot. Shops at street level, two floors of apartments, a terrace on the roof.' },
-  { in: 0.62, out: 0.72, title: 'Arrival.', body: 'North Street entrance, late afternoon.' },
-  { in: 0.88, out: 1.03, num: '01', title: 'Lobby', body: 'Travertine, lime plaster, oak slats, and a patio open to the sky. 3.30 m ceiling.' },
-  { in: 1.16, out: 1.32, title: 'Parking.', body: 'Six covered spaces under the upper floors, two in tandem per bay, behind a sliding gate on North Street.' },
-  { in: 1.59, out: 1.67, title: 'The corner.', body: 'West sun on the café terrace. Three shopfronts on the avenue.' },
-  { in: 1.77, out: 1.94, num: '02', title: 'Café', body: 'Fluted oak counter, green zellige, terrazzo floor, a window bar on North Street. 28.2 m².' },
-  { in: 2.09, out: 2.39, num: '03', title: 'Clothing store', body: 'Oak shelving, a travertine plinth, a fitting room behind linen. 30.8 m².' },
-  { in: 2.54, out: 2.73, num: '04', title: 'Bookshop', body: 'Oak shelves on two walls, a long table of new titles, a reading chair by the window. 29.2 m².' },
-  { in: 2.96, out: 3.06, title: 'Floor 1.', body: 'Seven apartments around the light well. First, studio 1.02 on the avenue.' },
-  { in: 3.42, out: 3.64, num: '05', title: 'Studio 1.02', body: 'Bed by the French window, a full kitchen, a table for two, bathroom by the entry. 32.6 m².' },
-  { in: 3.79, out: 3.92, title: 'Up one floor.', body: 'The stair turns beside the light well.' },
-  { in: 4.11, out: 4.21, title: 'Floor 2.', body: 'The three west studios combined into one residence; four more apartments around the light well.' },
-  { in: 4.62, out: 4.80, num: '06', title: 'Residence 2.01', body: 'The three west studios of floor 2 combined: 97 m², living, dining and kitchen in one 63 m² room.' },
-  { in: 4.87, out: 5.01, title: 'West light.', body: 'The French windows open over the avenue at sunset.' },
-  { in: 5.22, out: 5.40, num: '07', title: 'Roof terrace', body: 'Two oak decks either side of the stair and tank volumes, open to the sky.' },
-  { in: 5.50, out: 5.68, title: 'The east deck.', body: 'Dinner for six under the pergola, string lights and an olive in the corner.' },
-  { in: 5.88, out: 6.08, title: 'The west deck.', body: 'Hot tub, loungers, a lounge round the fire and an outdoor kitchen, facing the hills at sunset.' },
+  { in: 0.08, out: 0.46, title: 'The drawing is the building.', body: 'One model, cut at 1.20 m and seen from 900 m away through a very long lens.' },
+  { in: 0.60, out: 0.78, title: '20.40 × 9.00 m', body: 'on a corner lot. Shops at street level, two floors of apartments, a terrace on the roof.' },
+  { in: 0.82, out: 0.92, title: 'Arrival.', body: 'North Street entrance, late afternoon.' },
+  { in: 1.08, out: 1.23, num: '01', title: 'Lobby', body: 'Travertine, lime plaster, oak slats, and a patio open to the sky. 3.30 m ceiling.' },
+  { in: 1.36, out: 1.52, title: 'Parking.', body: 'Six covered spaces under the upper floors, two in tandem per bay, behind a sliding gate on North Street.' },
+  { in: 1.79, out: 1.87, title: 'The corner.', body: 'West sun on the café terrace. Three shopfronts on the avenue.' },
+  { in: 1.97, out: 2.14, num: '02', title: 'Café', body: 'Fluted oak counter, green zellige, terrazzo floor, a window bar on North Street. 28.2 m².' },
+  { in: 2.29, out: 2.59, num: '03', title: 'Clothing store', body: 'Oak shelving, a travertine plinth, a fitting room behind linen. 30.8 m².' },
+  { in: 2.74, out: 2.93, num: '04', title: 'Bookshop', body: 'Oak shelves on two walls, a long table of new titles, a reading chair by the window. 29.2 m².' },
+  { in: 3.16, out: 3.46, title: 'Floor 1.', body: 'Seven apartments around the light well. First, studio 1.02 on the avenue.' },
+  { in: 3.82, out: 4.04, num: '05', title: 'Studio 1.02', body: 'Bed by the French window, a full kitchen, a table for two, bathroom by the entry. 32.6 m².' },
+  { in: 4.19, out: 4.32, title: 'Up one floor.', body: 'The stair turns beside the light well.' },
+  { in: 4.49, out: 4.79, title: 'Floor 2.', body: 'The three west studios combined into one residence; four more apartments around the light well.' },
+  { in: 5.22, out: 5.40, num: '06', title: 'Residence 2.01', body: 'The three west studios of floor 2 combined: 97 m², living, dining and kitchen in one 63 m² room.' },
+  { in: 5.47, out: 5.61, title: 'West light.', body: 'The French windows open over the avenue at sunset.' },
+  { in: 5.82, out: 6.00, num: '07', title: 'Roof terrace', body: 'Two oak decks either side of the stair and tank volumes, open to the sky.' },
+  { in: 6.10, out: 6.28, title: 'The east deck.', body: 'Dinner for six under the pergola, string lights and an olive in the corner.' },
+  { in: 6.48, out: 6.68, title: 'The west deck.', body: 'Hot tub, loungers, a lounge round the fire and an outdoor kitchen, facing the hills at sunset.' },
 ];
 
 export default function Walkthrough() {
@@ -33,6 +34,9 @@ export default function Walkthrough() {
   const track = useRef(null);
   const captions = useRef([]);
   const [ready, setReady] = useState(false);
+  const [progress, setProgress] = useState(0);
+  const [loaderGone, setLoaderGone] = useState(false);
+  const hideLoader = useCallback(() => setLoaderGone(true), []);
   const [record, setRecord] = useState(false);
 
   useEffect(() => {
@@ -59,6 +63,7 @@ export default function Walkthrough() {
           track: track.current,
           captions: captions.current.filter(Boolean),
         },
+        onProgress: setProgress,
         onReady: () => setReady(true),
       });
     });
@@ -125,7 +130,7 @@ export default function Walkthrough() {
       </div>
 
       <nav className="rail" aria-hidden="true"><div ref={railfill} className="rail-fill" /></nav>
-      {!(record && ready) && <div className={`loader${ready ? ' done' : ''}`}>Preparing the drawing…</div>}
+      {!loaderGone && !(record && ready) && <Loader progress={progress} ready={ready} onDone={hideLoader} />}
 
       <main ref={track} className="track" />
     </>

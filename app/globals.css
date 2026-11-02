@@ -47,16 +47,50 @@ body { overflow-x: hidden; }
 .rail { position: fixed; right: 14px; top: 50%; transform: translateY(-50%); width: 2px; height: 32vh; background: rgba(20,20,20,.15); }
 .rail-fill { width: 100%; height: 0; background: var(--ink); }
 
-.loader {
-  position: fixed; inset: 0; display: grid; place-items: center; background: var(--paper);
-  font-family: var(--mono); font-size: 12px; letter-spacing: .12em; text-transform: uppercase; transition: opacity .6s;
+/* loading screen (components/Loader.jsx) */
+.loader { position: fixed; inset: 0; z-index: 50; background: var(--paper); color: var(--ink); }
+.loader.done { opacity: 0; pointer-events: none; transition: opacity 1s cubic-bezier(.65, 0, .35, 1) .4s; }
+.ld-mast {
+  position: absolute; top: 0; left: 0; right: 0; display: flex; justify-content: space-between;
+  padding: 22px 28px; font-size: 12px; letter-spacing: .14em; text-transform: uppercase;
 }
-.loader.done { opacity: 0; pointer-events: none; }
+.ld-mark { font-weight: 600; }
+.ld-meta { font-family: var(--mono); letter-spacing: .06em; color: var(--ink-soft); }
+.ld-center { position: absolute; inset: 0; display: grid; place-content: center; text-align: center; gap: 14px; }
+.ld-title, .ld-sub { overflow: hidden; }
+.ld-title span, .ld-sub span { display: inline-block; transform: translateY(105%); animation: ld-rise 1.1s cubic-bezier(.2, .7, .1, 1) forwards; }
+.ld-title { font-weight: 500; font-size: clamp(30px, 4.4vw, 56px); letter-spacing: -.02em; line-height: 1.1; padding-bottom: .12em; margin-bottom: -.12em; }
+.ld-sub { font-family: var(--mono); font-size: 12px; letter-spacing: .08em; color: var(--ink-soft); }
+.ld-sub span { animation-delay: .18s; }
+.ld-foot {
+  position: absolute; left: 28px; right: 28px; bottom: 26px; display: flex; justify-content: space-between; align-items: flex-end;
+  opacity: 0; animation: ld-fade .8s ease .35s forwards;
+}
+.ld-note { font-family: var(--mono); font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-soft); padding-bottom: 10px; }
+.ld-count {
+  font-weight: 500; font-size: clamp(56px, 9vw, 120px); line-height: .8; letter-spacing: -.04em;
+  font-variant-numeric: tabular-nums; min-width: 3ch; text-align: right;
+}
+.ld-line { position: absolute; left: 0; right: 0; bottom: 0; height: 2px; background: rgba(20, 20, 20, .08); }
+.ld-line i { display: block; height: 100%; background: var(--ink); transform-origin: left; transform: scaleX(0); }
+/* exit: the type drops back behind its masks, then the paper fades off the scene */
+.loader.done .ld-title span, .loader.done .ld-sub span { animation: ld-sink .6s cubic-bezier(.6, 0, .8, .3) forwards; }
+.loader.done .ld-foot, .loader.done .ld-mast { animation: ld-out .5s ease forwards; }
+@keyframes ld-rise { to { transform: translateY(0); } }
+@keyframes ld-sink { from { transform: translateY(0); } to { transform: translateY(-105%); } }
+@keyframes ld-fade { to { opacity: 1; } }
+@keyframes ld-out { from { opacity: 1; } to { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) {
+  .ld-title span, .ld-sub span, .ld-foot { animation-duration: .01s !important; animation-delay: 0s !important; }
+}
 
 @media (max-width: 640px) {
   .mast { padding: 16px; }
   .mast .meta { display: none; }
   .titleblock { right: 16px; left: 16px; bottom: 16px; width: auto; }
+  .ld-mast { padding: 16px; }
+  .ld-meta { display: none; }
+  .ld-foot { left: 16px; right: 16px; bottom: 18px; }
   .captions { left: 16px; bottom: 16px; }
   .cap { font-size: 14px; }
 }
