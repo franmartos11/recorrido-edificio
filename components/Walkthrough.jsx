@@ -26,7 +26,7 @@ const CAPTIONS = [
 
 // chapter index (raw story positions, the same clock as the captions)
 const CHAPTERS = [
-  { u: 0, label: 'Plan' }, { u: 1.06, label: 'Lobby' }, { u: 1.34, label: 'Parking' }, { u: 1.95, label: 'Café' },
+  { u: 0, label: 'Plan' }, { u: 1.06, label: 'Lobby' }, { u: 1.42, label: 'Parking' }, { u: 1.95, label: 'Café' },
   { u: 2.27, label: 'Clothing' }, { u: 2.72, label: 'Books' }, { u: 3.8, label: 'Studio' }, { u: 5.2, label: 'Residence' },
   { u: 5.8, label: 'Roof' }, { u: 7.0, label: 'Building' },
 ];
