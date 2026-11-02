@@ -22,7 +22,13 @@ const CAPTIONS = [
   { in: 5.82, out: 6.00, num: '07', title: 'Roof terrace', body: 'Two oak decks either side of the stair and tank volumes, open to the sky.' },
   { in: 6.10, out: 6.28, title: 'The east deck.', body: 'Dinner for six under the pergola, string lights and an olive in the corner.' },
   { in: 6.48, out: 6.66, title: 'The west deck.', body: 'Hot tub, loungers, a lounge round the fire and an outdoor kitchen, facing the hills at sunset.' },
-  { in: 6.84, out: 7.4, title: 'Corner Building.', body: 'Three shops, fourteen apartments and a roof terrace on a corner lot.' },
+];
+
+// chapter index (raw story positions, the same clock as the captions)
+const CHAPTERS = [
+  { u: 0, label: 'Plan' }, { u: 1.06, label: 'Lobby' }, { u: 1.34, label: 'Parking' }, { u: 1.95, label: 'Café' },
+  { u: 2.27, label: 'Clothing' }, { u: 2.72, label: 'Books' }, { u: 3.8, label: 'Studio' }, { u: 5.2, label: 'Residence' },
+  { u: 5.8, label: 'Roof' }, { u: 7.0, label: 'Building' },
 ];
 
 export default function Walkthrough() {
@@ -34,6 +40,29 @@ export default function Walkthrough() {
   const railfill = useRef(null);
   const track = useRef(null);
   const captions = useRef([]);
+  const chapters = useRef([]);
+  const cta = useRef(null);
+  const rail = useRef(null);
+  const expRef = useRef(null);
+  // chapter jumps: a near one glides there on the scroll; a far one (where gliding would race through
+  // half the building) fades to paper with the chapter's name, cuts, and opens on the new view
+  const [jump, setJump] = useState(null);   // { n, label, phase: 'in' | 'out' }
+  const jumping = useRef(false);
+  const go = (u, i) => {
+    const exp = expRef.current;
+    if (!exp || jumping.current) return;
+    const c = CHAPTERS[i] ?? { label: '' };
+    if (exp.distanceTo(u) < 0.1) { exp.goTo(u); return; }
+    jumping.current = true;
+    setJump({ n: String(Math.max(0, i)).padStart(2, '0'), label: c.label, phase: 'in' });
+    setTimeout(() => {
+      exp.goTo(u, { immediate: true });
+      setTimeout(() => {
+        setJump((j) => j && { ...j, phase: 'out' });
+        setTimeout(() => { setJump(null); jumping.current = false; }, 1100);
+      }, 650);
+    }, 750);
+  };
   const [ready, setReady] = useState(false);
   const [progress, setProgress] = useState(0);
   const [loaderGone, setLoaderGone] = useState(false);
@@ -63,10 +92,14 @@ export default function Walkthrough() {
           railfill: railfill.current,
           track: track.current,
           captions: captions.current.filter(Boolean),
+          chapters: chapters.current.filter(Boolean),
+          cta: cta.current,
+          rail: rail.current,
         },
         onProgress: setProgress,
         onReady: () => setReady(true),
       });
+      expRef.current = exp;
     });
     return () => {
       cancelled = true;
@@ -130,7 +163,37 @@ export default function Walkthrough() {
         ))}
       </div>
 
-      <nav className="rail" aria-hidden="true"><div ref={railfill} className="rail-fill" /></nav>
+      <nav ref={rail} className="rail" aria-label="Chapters">
+        <div className="rail-line"><div ref={railfill} className="rail-fill" /></div>
+        <ol>
+          {CHAPTERS.map((c, i) => (
+            <li key={c.label}>
+              <button ref={(el) => { chapters.current[i] = el; }} data-u={c.u} onClick={() => go(c.u, i)}>
+                <span className="ch-n">{String(i).padStart(2, '0')}</span><span className="ch-l">{c.label}</span>
+              </button>
+            </li>
+          ))}
+        </ol>
+      </nav>
+
+      <section ref={cta} className="cta" style={{ opacity: 0, pointerEvents: 'none' }} aria-label="Enquire">
+        <p className="cta-k">Corner Building · Mixed use</p>
+        <h2 className="cta-t">Three shops, fourteen apartments and a roof terrace on a corner lot.</h2>
+        <div className="cta-a">
+          <a className="cta-b primary" href="mailto:hello@example.com?subject=Corner%20Building">Enquire about availability</a>
+          <a className="cta-b" href="#plans" onClick={(e) => { e.preventDefault(); go(3.25, -1); }}>View the plans</a>
+          <button className="cta-b ghost" onClick={() => go(0, 0)}>Replay the walk</button>
+        </div>
+      </section>
+      {jump && (
+        <div className={`jump ${jump.phase}`} aria-hidden="true">
+          <div className="jump-c">
+            <span className="jump-n">{jump.n}</span>
+            <span className="jump-l">{jump.label || 'Floor plans'}</span>
+          </div>
+          <i className="jump-line" />
+        </div>
+      )}
       {!loaderGone && !(record && ready) && <Loader progress={progress} ready={ready} onDone={hideLoader} />}
 
       <main ref={track} className="track" />
