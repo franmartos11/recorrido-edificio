@@ -34,6 +34,7 @@ const CHAPTERS = [
 export default function Walkthrough() {
   const stage = useRef(null);
   const paper = useRef(null);
+  const post = useRef(null);
   const titleblock = useRef(null);
   const titleblock2 = useRef(null);
   const titleblock3 = useRef(null);
@@ -86,6 +87,7 @@ export default function Walkthrough() {
         record: isRecord,
         ui: {
           paper: paper.current,
+          post: post.current,
           titleblock: titleblock.current,
           titleblock2: titleblock2.current,
           titleblock3: titleblock3.current,
@@ -112,6 +114,7 @@ export default function Walkthrough() {
     <>
       <div ref={stage} className="stage" />
       <div ref={paper} className="paper" />
+      <div ref={post} className="post" style={{ opacity: 0 }} />
 
       <header className="mast">
         <span className="mark">STUDIO&nbsp;NAME</span>
@@ -157,8 +160,8 @@ export default function Walkthrough() {
       <div className="captions">
         {CAPTIONS.map((c, i) => (
           <p key={i} ref={(el) => { captions.current[i] = el; }} className="cap" data-in={c.in} data-out={c.out}>
-            {c.num && <span className="num">{c.num}</span>}
-            <b>{c.title}</b> {c.body}
+            <span className="cap-h">{c.num && <span className="num">{c.num}</span>}<b>{c.title.replace(/\.$/, '')}</b></span>
+            <span className="cap-b">{c.body}</span>
           </p>
         ))}
       </div>
