@@ -21,7 +21,8 @@ const CAPTIONS = [
   { in: 5.47, out: 5.61, title: 'West light.', body: 'The French windows open over the avenue at sunset.' },
   { in: 5.82, out: 6.00, num: '07', title: 'Roof terrace', body: 'Two oak decks either side of the stair and tank volumes, open to the sky.' },
   { in: 6.10, out: 6.28, title: 'The east deck.', body: 'Dinner for six under the pergola, string lights and an olive in the corner.' },
-  { in: 6.48, out: 6.68, title: 'The west deck.', body: 'Hot tub, loungers, a lounge round the fire and an outdoor kitchen, facing the hills at sunset.' },
+  { in: 6.48, out: 6.66, title: 'The west deck.', body: 'Hot tub, loungers, a lounge round the fire and an outdoor kitchen, facing the hills at sunset.' },
+  { in: 6.84, out: 7.4, title: 'Corner Building.', body: 'Three shops, fourteen apartments and a roof terrace on a corner lot.' },
 ];
 
 export default function Walkthrough() {
